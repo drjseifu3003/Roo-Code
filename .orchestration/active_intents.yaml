@@ -1,0 +1,13 @@
+active_intents:
+  - id: "INT-001"
+    name: "Initialize Governance Framework"
+    status: "IN_PROGRESS"
+    owned_scope:
+      - "src/hooks/**"
+      - ".orchestration/**"
+    constraints:
+      - "AI must call select_active_intent before any file write"
+      - "Every change must be logged in agent_trace.jsonl"
+    acceptance_criteria:
+      - "Pre-hooks block unauthorized writes"
+      - "Trace ledger records the first intent handshake"

@@ -81,7 +81,6 @@ async function generatePrompt(
 
 	// Tools catalog is not included in the system prompt.
 	const toolsCatalog = ""
-
 	const basePrompt = `${roleDefinition}
 
 ${markdownFormattingSection()}
@@ -106,7 +105,17 @@ ${await addCustomInstructions(baseInstructions, globalCustomInstructions || "", 
 	settings,
 })}`
 
-	return basePrompt
+	// NEW: Inject the Master Thinker Handshake Protocol
+	const governedPrompt = `
+### MANDATORY GOVERNANCE PROTOCOL
+1. You are an Intent-Driven Agent. You are FORBIDDEN from writing code or running terminal commands immediately.
+2. Your FIRST action for any request MUST be to call 'select_active_intent' with a valid ID from .orchestration/active_intents.yaml.
+3. You must adhere to the <intent_context> returned by that tool before proceeding to Stage 3 (Contextualized Action).
+4. Failure to follow this handshake will result in a Protocol Violation error.
+
+${basePrompt}`
+
+	return governedPrompt
 }
 
 export const SYSTEM_PROMPT = async (
